@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  webservice1:
+    build:
+      context: ./WebService1-Authentification
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./WebService1-Authentification:/usr/src/app
+    working_dir: /usr/src/app
+    networks:
+      - mean-network
+  
+  webservice2:
+    build:
+      context: ./WebService2-Serveur
+      dockerfile: Dockerfile
+    ports:
+      - "3030:3030"
+    volumes:
+      - ./WebService2-Serveur:/usr/src/app
+    working_dir: /usr/src/app
+    networks:
+      - mean-network
+
+  frontend:
+    build:
+      context: ./ProjectwebDist
+      dockerfile: Dockerfile
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./ProjectwebDist:/usr/src/app
+    working_dir: /usr/src/app
+    networks:
+      - mean-network
+
+  mongodb:
+    image: mongo
+    networks:
+      - mean-network
+
+networks:
+  mean-network:
+    driver: bridge
